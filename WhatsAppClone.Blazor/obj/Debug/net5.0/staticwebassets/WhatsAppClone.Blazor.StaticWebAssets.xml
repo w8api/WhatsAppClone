@@ -1,0 +1,4 @@
+﻿<StaticWebAssets Version="1.0">
+  <ContentRoot BasePath="/" Path="C:\Users\conta\source\repos\WhatsAppClone\WhatsAppClone.Blazor\bin\Debug\net5.0\wwwroot\" />
+  <ContentRoot BasePath="/" Path="C:\Users\conta\source\repos\WhatsAppClone\WhatsAppClone.Blazor\obj\Debug\net5.0\scopedcss\bundle\" />
+</StaticWebAssets>
