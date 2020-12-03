@@ -1,0 +1,104 @@
+﻿@page "/chat"
+@inherits ChatBase
+<!-- Main container -->
+<div class="d-flex h-100 flex-grow-1">
+
+    <!-- Chats -->
+    <div style="width: 35%;" class="d-flex flex-column flex-grow-1 overflow-auto">
+        @{
+            if (Chats != null)
+            {
+                foreach (var chat in Chats)
+                {
+                    bool isSelected = SelectedChat != null && chat.Equals(SelectedChat);
+                    <div class="d-flex flex-column p-2 py-3 cursor-pointer @(isSelected ? "bg-light" : "")" @onclick="async () => await SelectChat(chat)">
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-column mr-2">
+                                <img class="rounded-circle icon-sender"
+                                     src="@chat.ContactPictureUrl" />
+                            </div>
+                            <div class="d-flex flex-column min-width-0 justify-content-between flex-grow-1 ">
+                                <b class="text-ellipsis">@chat.FormattedTitle</b>
+                                <p class="text-ellipsis m-0 small">
+                                    @chat.LastMessage?.Body
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    @if (!isSelected)
+                    {
+                        <hr class="w-100 h-1px" />
+                    }
+                }
+            }
+            else
+            {
+                <span>Loading chats...</span>
+            }
+        }
+    </div>
+
+    <hr class="h-auto w-1px bg-light" />
+
+    <!-- Messages -->
+    <div style="width: 65%;" class="bg-white d-flex flex-column">
+        @if (SelectedChat != null)
+        {
+            <!-- Title -->
+            <div class="d-flex flex-row p-2 px-3">
+                <img class="rounded-circle icon-sender mr-3 align-self-center"
+                     src="@SelectedChat.ContactPictureUrl" />
+                <b class="text-ellipsis">@SelectedChat.FormattedTitle</b>
+            </div>
+            <hr class="bg-light" />
+            @if (SelectedChatMessages != null)
+            {
+                <!-- Messages -->
+                <div class="d-flex flex-column flex-grow-1 p-3 overflow-auto" @ref="divMessages">
+
+                    @foreach (var message in SelectedChatMessages.Where(w => w.Type == Features.Message.EMessageType.TEXT))
+                    {
+                        if (!message.FromMe)
+                        {
+                            <div class="d-flex flex-row justify-content-end mb-5">
+                                <div class="d-flex flex-column mr-2">
+                                    <p class="p-3 rounded bg-message">@message.Body</p>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex flex-row mb-5">
+                                <div class="d-flex flex-column">
+                                    <p class="bg-light p-3 rounded">
+                                        @message.Body
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+                <!-- End Messages -->
+                <!-- Textarea new message -->
+                <div class="p-3">
+                    <div class="d-flex flex-column p-2 border rounded">
+                        <textarea class="border-0 textarea-clean @(IsSendingMessage ? "bg-light" :"")" 
+                                  @bind="Message" 
+                                  @onkeypress="OnMessageKeyDown" 
+                                  @bind:event="oninput" 
+                                  @ref="textbox"
+                                  disabled="@IsSendingMessage"
+                                  placeholder="Type a message"></textarea>
+                    </div>
+                </div>
+                <!-- End textarea -->
+            }
+            else
+            {
+                <span>Loading messages...</span>
+            }
+        }
+    </div>
+
+</div>

@@ -1,0 +1,18 @@
+﻿.icon-sender {
+    height: 49px;
+    width: 49px;
+}
+
+
+.icon-sender-small {
+    height: 35px;
+    width: 35px;
+}
+
+.bg-message {
+    background-color: #c5f0ae;
+}
+
+.icon-message {
+    font-size: 18px;
+}

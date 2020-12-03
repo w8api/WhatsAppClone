@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatsAppClone.Blazor", "WhatsAppClone.Blazor\WhatsAppClone.Blazor.csproj", "{4D3BEE12-31A4-4DB0-B314-7A11B5024B26}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatsAppClone.Api", "WhatsAppClone.Api\WhatsAppClone.Api.csproj", "{8AA86941-E14A-43E4-897D-A16FFC0ABF22}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4D3BEE12-31A4-4DB0-B314-7A11B5024B26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D3BEE12-31A4-4DB0-B314-7A11B5024B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D3BEE12-31A4-4DB0-B314-7A11B5024B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D3BEE12-31A4-4DB0-B314-7A11B5024B26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AA86941-E14A-43E4-897D-A16FFC0ABF22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AA86941-E14A-43E4-897D-A16FFC0ABF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AA86941-E14A-43E4-897D-A16FFC0ABF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AA86941-E14A-43E4-897D-A16FFC0ABF22}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18F991C9-9474-44B2-9EB9-48053F7620C0}
+	EndGlobalSection
+EndGlobal
