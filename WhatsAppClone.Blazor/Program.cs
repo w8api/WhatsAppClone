@@ -1,13 +1,9 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace WhatsAppClone.Blazor
@@ -25,7 +21,7 @@ namespace WhatsAppClone.Blazor
             #region Dependency injection
 
             // httpclient
-            var httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:44317/") };
+            var httpClient = new HttpClient { BaseAddress = new Uri("https://localhost:44317/api/") };
             httpClient.DefaultRequestHeaders.Add("X-API-KEY", "IlAvXQ0Ryz0YqTjKq2twQ28AWPDKoBp1WrQJKDE3OhT26ylwcUUVS6TQm9YIMqnxJ8C9DZ9nx0itjGEinRrTrUjaY9gKo6qh4fs7");
             builder.Services.AddScoped(sp => httpClient);
 
@@ -36,6 +32,9 @@ namespace WhatsAppClone.Blazor
             {
                 builder.Services.AddScoped(stateType);
             }
+
+            // webhook signalr conn
+            builder.Services.AddScoped<Features.Shared.WebhookConnection>();
 
             #endregion
 

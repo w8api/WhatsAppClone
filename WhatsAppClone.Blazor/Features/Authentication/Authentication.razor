@@ -4,6 +4,14 @@
 <!-- Main container -->
 <div class="d-flex flex-column h-100 flex-grow-1 justify-content-center align-items-center">
     <h1>WhatsApp Clone + Blazor</h1>
-    <h5>Read the Qr-Code bellow</h5>
-    <img src="" alt="qr-code" />
+
+    @if (!string.IsNullOrWhiteSpace(QrCodeBase64))
+    {
+        <h5>Read the Qr-Code bellow</h5>
+        <img class="m-5" src="@("data:image;base64," + QrCodeBase64)" style="width: 300px; height: 300px;" />
+    }
+    else
+    {
+        <span>Loading the QrCode, please wait</span>
+    }
 </div>

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatsAppClone.Blazor", "Wha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhatsAppClone.Api", "WhatsAppClone.Api\WhatsAppClone.Api.csproj", "{8AA86941-E14A-43E4-897D-A16FFC0ABF22}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhatsAppClone.Common", "WhatsAppClone.Common\WhatsAppClone.Common.csproj", "{7903BE7B-61B3-46E1-9377-98C7CF2A6AC3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8AA86941-E14A-43E4-897D-A16FFC0ABF22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AA86941-E14A-43E4-897D-A16FFC0ABF22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AA86941-E14A-43E4-897D-A16FFC0ABF22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7903BE7B-61B3-46E1-9377-98C7CF2A6AC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7903BE7B-61B3-46E1-9377-98C7CF2A6AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7903BE7B-61B3-46E1-9377-98C7CF2A6AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7903BE7B-61B3-46E1-9377-98C7CF2A6AC3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

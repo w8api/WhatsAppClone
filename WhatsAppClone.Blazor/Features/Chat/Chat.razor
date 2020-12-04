@@ -56,7 +56,7 @@
                 <!-- Messages -->
                 <div class="d-flex flex-column flex-grow-1 p-3 overflow-auto" @ref="divMessages">
 
-                    @foreach (var message in SelectedChatMessages.Where(w => w.Type == Features.Message.EMessageType.TEXT))
+                    @foreach (var message in SelectedChatMessages.Where(w => w.Type == Common.Features.WhatsApp.Message.EMessageType.TEXT))
                     {
                         if (!message.FromMe)
                         {

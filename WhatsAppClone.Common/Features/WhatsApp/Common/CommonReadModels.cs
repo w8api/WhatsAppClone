@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace WhatsAppClone.Blazor.Features.Common
+namespace WhatsAppClone.Common.Features.WhatsApp.Common
 {
     public record LocationReadModel
     {

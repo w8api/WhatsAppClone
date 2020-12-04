@@ -6,14 +6,18 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using WhatsAppClone.Blazor.Features.Shared;
+using WhatsAppClone.Common.Features.WhatsApp.Chat;
+using WhatsAppClone.Common.Features.WhatsApp.Message;
 
 namespace WhatsAppClone.Blazor.Features.Chat
 {
-    public class ChatBase : ComponentBase
+    public class ChatBase : ComponentBaseExtended, IDisposable
     {
         #region Vars
 
         protected ElementReference divMessages, textbox;
+        Guid _accountId;
 
         #endregion
 
@@ -28,6 +32,9 @@ namespace WhatsAppClone.Blazor.Features.Chat
         [Inject]
         JsInterop.BrowserInterop BrowserInterop { get; set; }
 
+        [Inject]
+        NavigationManager NavigationManager { get; set; }
+
         #endregion
 
         #region Props
@@ -36,11 +43,13 @@ namespace WhatsAppClone.Blazor.Features.Chat
 
         protected ChatReadModel SelectedChat { get; set; }
 
-        protected IEnumerable<Message.MessageReadModel> SelectedChatMessages { get; private set; }
+        protected List<MessageReadModel> SelectedChatMessages { get; private set; }
 
         protected string Message { get; set; }
 
         protected bool IsSendingMessage { get; private set; }
+
+        public static event Func<MessageReceivedDto, Task> OnMessageReceivedEvent;
 
         #endregion
 
@@ -50,13 +59,29 @@ namespace WhatsAppClone.Blazor.Features.Chat
 
             if (firstRender)
             {
-                #region Get Chats
+                #region Check the accountid
 
-                Chats = await HttpClient.GetFromJsonAsync<IEnumerable<ChatReadModel>>($"/api/whatsapp/chats/accounts/{Constants.ACCOUNT_ID}?shouldIncludeProfilePicture=true&shouldIncludeLastMessage=true");
-                StateHasChanged();
+                var accountId = await BrowserInterop.LocalStorageGet<Guid?>("AccountId");
+
+                if (accountId.GetValueOrDefault() == Guid.Empty)
+                {
+                    NavigationManager.NavigateTo("/");
+                    return;
+                }
+
+                _accountId = accountId.Value;
 
                 #endregion
+
+                OnMessageReceivedEvent += ChatBase_OnMessageReceive;
+                await BindChats();
+                StateHasChanged();
             }
+        }
+
+        async Task BindChats()
+        {
+            Chats = await HttpClient.GetFromJsonAsync<IEnumerable<ChatReadModel>>($"whatsapp/chats/accounts/{_accountId}");
         }
 
         protected async Task SelectChat(ChatReadModel selectedChat)
@@ -68,9 +93,9 @@ namespace WhatsAppClone.Blazor.Features.Chat
 
         async Task LoadMessagesFromSelectedChat()
         {
-            SelectedChatMessages = await HttpClient.GetFromJsonAsync<IEnumerable<Message.MessageReadModel>>($"/api/whatsapp/messages/accounts/{Constants.ACCOUNT_ID}/{SelectedChat.SerializedId}");
+            SelectedChatMessages = (await HttpClient.GetFromJsonAsync<IEnumerable<MessageReadModel>>($"whatsapp/messages/accounts/{_accountId}/{SelectedChat.SerializedId}")).ToList();
             StateHasChanged();
-            await DomInterop.ScrollToBottom(divMessages);
+            await ScrollMessagesToBottom();
         }
 
         protected async Task OnMessageKeyDown(KeyboardEventArgs e)
@@ -81,7 +106,7 @@ namespace WhatsAppClone.Blazor.Features.Chat
                 {
                     IsSendingMessage = true;
 
-                    var response = await HttpClient.PostAsJsonAsync($"/api/whatsapp/messages/accounts/{Constants.ACCOUNT_ID}/{SelectedChat.SerializedId}/send-text", new { Text = Message });
+                    var response = await HttpClient.PostAsJsonAsync($"whatsapp/messages/accounts/{_accountId}/{SelectedChat.SerializedId}/send-text", new { Text = Message });
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -99,6 +124,37 @@ namespace WhatsAppClone.Blazor.Features.Chat
                     }
                 }
             }
+        }
+
+        #region For outsite events
+
+        private async Task ChatBase_OnMessageReceive(MessageReceivedDto messageReceivedDto)
+        {
+            var message = messageReceivedDto.Message;
+
+            if (message.From == SelectedChat?.SerializedId)
+            {
+                SelectedChatMessages.Add(message);
+            }
+
+            await BindChats();
+
+            await InvokeAsync(() => StateHasChanged());
+            await ScrollMessagesToBottom();
+        }
+
+        async Task ScrollMessagesToBottom()
+            => await DomInterop.ScrollToBottom(divMessages);
+
+        public static async Task NotifyMessageReceived(MessageReceivedDto messageReceivedDto)
+            => await OnMessageReceivedEvent?.Invoke(messageReceivedDto);
+
+        #endregion
+
+        public void Dispose()
+        {
+            OnMessageReceivedEvent -= ChatBase_OnMessageReceive;
+            GC.SuppressFinalize(this);
         }
     }
 }
